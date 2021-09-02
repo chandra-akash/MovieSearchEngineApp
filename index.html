@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link data-rh="true" rel="icon"
+            href="https://cdn.icon-icons.com/icons2/2248/PNG/512/movie_search_icon_137377.png" type="image/x-icon">
+        <title>Movie Search Engine</title>
+
+    </head>
+
+    <body>
+
+        <!-- navbar -->
+        <div id="navbar">
+            <div>
+                <h1>Movie Search Engine</h1>
+            </div>
+        </div>
+
+        <!-- slideshow -->
+        <div id="slideshow">
+            <!-- movie Searchbar -->
+            <div class="searchHolder">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="query" placeholder="Name of Movies"
+                        aria-describedby="button-addon2" oninput="throttleFunction()">
+                    <label for="floatingInput">Type The Name of a movie</label>
+                </div>
+                <img src="https://w7.pngwing.com/pngs/440/211/png-transparent-computer-icons-font-awesome-google-search-logo-web-search-engine-magnifying-glass-bing-logo-vector-icons.png"
+                    alt="" id="searchLogo">
+            </div>
+            <!-- result display -->
+            <div class="zIndx" id="moviesResult"></div>
+
+        </div>
+
+        <div class="container">
+
+            <!-- not found error message -->
+            <div id="alert">
+                <div id="errorMessage">
+                </div>
+                <img id="errorGIF" src="https://i.makeagif.com/media/11-04-2015/mfnzwt.gif" alt="this slowpoke moves"
+                    alt="404 image" />
+            </div>
+
+            <!-- searched movie details -->
+            <div id="movieContainer">
+                <div id="movie-Poster">
+                    <img id="moviePoster" src="" alt="">
+                </div>
+                <div id="movieDetails">
+                    <div><i>Title:</i><strong id="movies_title"></strong></div>
+                    <div><i>IMDb Rating:</i><strong id="movies_rating"></strong></div>
+                    <div id="tag"></div>
+                    <div><i>Released Date:</i><strong id="movies_released"></strong></div><br>
+                    <div><i>Actors:</i><strong id="actors"></strong></div>
+                    <div><i>Director:</i><strong id="director"></strong></div>
+                    <div><i>Writer:</i><strong id="writer"></strong></div>
+                    <div><i>Language:</i><strong id="language"></strong></div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
+<script src="Home.js"></script>
