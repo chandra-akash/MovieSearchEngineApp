@@ -103,7 +103,7 @@ async function searchDetails ()
     let res = await fetch( `https://www.omdbapi.com/?s=${ search }&apikey=ef3c69f6` );
     let data = await res.json();
 
-    console.log( 'data: ', data );
+    console.log( 'search data: ', data );
 
     let k = document.getElementById( "query" );
     k.addEventListener( "keydown", function ( e )
@@ -138,7 +138,7 @@ async function showMovieDetails ( Title )
         let res = await fetch( `https://www.omdbapi.com/?t=${ Title }&apikey=ef3c69f6` );
         let data = await res.json();
         // console.log( 'res: ', res );
-        // console.log( "data:", data );
+        console.log( "selected Movie details:", data );
 
         if ( data.imdbRating > '8.5' )
         {
