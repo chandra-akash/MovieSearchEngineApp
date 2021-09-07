@@ -2,19 +2,14 @@
 function slideshow ()
 {
     const arr = [ 'https://i.ytimg.com/vi/XQPIPJ8u3bQ/maxresdefault.jpg', 'https://static1.colliderimages.com/wordpress/wp-content/uploads/2021/08/spider-man-no-way-home-trailer-1.jpg', 'https://www.cnet.com/a/img/XzJkzYSp83iFXplZQvIZGOU-zGM=/940x0/2020/12/11/0dbba963-5005-46c8-8a92-0b015dbc7eb3/loki-logo-screenshot.jpg', 'https://i.ytimg.com/vi/QwievZ1Tx-8/maxresdefault.jpg', 'https://images.indianexpress.com/2021/05/venom-2-1200.jpg', 'https://cdn.mos.cms.futurecdn.net/MYL7N3YpdrJKMrYutYa8pn.jpg', 'https://static.india.com/wp-content/uploads/2020/08/sanjay-dutt-upcoming-films.jpg' ]
-    // let div = document.getElementById( 'slideshow' );
-    // let img = document.createElement( 'img' );
     let i = 0;
-    // img.src = arr[ 0 ];
     document.getElementById( 'slideshow' ).style.backgroundImage = `url( ${ arr[ 0 ] } )`;
-    // div.append( img );
     setInterval( function ()
     {
         if ( i == arr.length )
         {
             i = 0;
         }
-        // img.src = arr[ i ];
         document.getElementById( 'slideshow' ).style.backgroundImage = `url( ${ arr[ i ] } )`;
         i++;
     }, 3000 )
@@ -33,7 +28,6 @@ function throttleFunction ()
     {
         document.getElementById( "moviesResult" ).style.display = 'none';
         document.getElementById( 'searchLogo' ).src = 'https://w7.pngwing.com/pngs/440/211/png-transparent-computer-icons-font-awesome-google-search-logo-web-search-engine-magnifying-glass-bing-logo-vector-icons.png';
-        // console.log( 'blank field' );
     }
 }
 
@@ -48,7 +42,7 @@ function displayResults ( movies )
 {
     result_div.innerHTML = null;
     document.getElementById( "moviesResult" ).style.display = 'block';
-    movies.forEach( ( { Title, Year, Poster } ) =>
+    movies.forEach( ( { Title, Year, Poster, imdbID } ) =>
     {
         // console.log( "Movie name:", Title );
 
@@ -87,7 +81,7 @@ function displayResults ( movies )
             divInfo.style.color = "white";
         }
 
-        divResult.onclick = function () { showMovieDetails( Title ) };
+        divResult.onclick = function () { showMovieDetails( imdbID ) };
 
         if ( document.getElementById( 'query' ).value != "" )
         {
@@ -100,45 +94,46 @@ function displayResults ( movies )
 async function searchDetails ()
 {
     let search = document.getElementById( "query" ).value;
-    let res = await fetch( `https://www.omdbapi.com/?s=${ search }&apikey=ef3c69f6` );
-    let data = await res.json();
+    console.log( 'search: ', search );
+    console.log( 'search length: ', search.length );
 
-    console.log( 'search data: ', data );
-
-    let k = document.getElementById( "query" );
-    k.addEventListener( "keydown", function ( e )
+    if ( search.length > 2 )
     {
-        // Number 13 is the "Enter" key on the keyboard
-        if ( ( e.which == 13 || e.keyCode == 13 ) && ( data.Response == 'False' ) )
-        {
-            // console.log( 'Print Response: ', data.Response );
-            document.getElementById( "alert" ).style.display = `block`;
-            document.getElementById( "errorMessage" ).style.display = `block`;
-            document.getElementById( "errorGIF" ).style.display = `block`;
-            document.getElementById( "errorMessage" ).textContent = `NOT  FOUND           check the spelling`;
-            document.getElementById( "slideshow" ).style.backgroundImage = `url("https://i.makeagif.com/media/11-04-2015/mfnzwt.gif")`;
-            // window.location.hash = '#alert';
-            document.getElementById( 'alert' ).scrollIntoView();
-            setTimeout( () =>
-            {
-                window.location.reload();
-            }, 5000 );
-        } else
-        {
-        }
-    } );
+        let res = await fetch( `https://www.omdbapi.com/?s=${ search }&apikey=ef3c69f6` );
+        var data = await res.json();
+        console.log( 'data: ', data );
+    }
+
+    if ( search.length == 0 )
+    {
+        console.log( 'Should Reload' );
+        window.location.reload();
+    } else if ( ( data.Response == 'False' ) && ( search.length > 2 ) ) //( e.which == 13 || e.keyCode == 13 ) &&
+    {
+        // console.log( 'Print Response: ', data.Response );
+        document.getElementById( "alert" ).style.display = `block`;
+        document.getElementById( "errorMessage" ).style.display = `block`;
+        document.getElementById( "errorGIF" ).style.display = `block`;
+        document.getElementById( "errorMessage" ).textContent = `NOT  FOUND           check the spelling`;
+        document.getElementById( 'alert' ).scrollIntoView();
+    } else 
+    {
+        document.getElementById( 'slideshow' ).scrollIntoView();
+        document.getElementById( "alert" ).style.display = 'none';
+        document.getElementById( "movieContainer" ).style.display = 'none';
+    }
     return data.Search;
 }
 
 
-async function showMovieDetails ( Title )
+async function showMovieDetails ( ID )
 {
     try
     {
-        let res = await fetch( `https://www.omdbapi.com/?t=${ Title }&apikey=ef3c69f6` );
+        let res = await fetch( `https://www.omdbapi.com/?i=${ ID }&apikey=ef3c69f6` );
         let data = await res.json();
         // console.log( 'res: ', res );
-        console.log( "selected Movie details:", data );
+        // console.log( "data:", data );
 
         if ( data.imdbRating > '8.5' )
         {
